@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:task_managment/UI/screens/OTP_varification.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
 
-class email_varification extends StatefulWidget {
-  const email_varification({Key? key}) : super(key: key);
+class OTP_varification extends StatefulWidget {
+  const OTP_varification({Key? key}) : super(key: key);
 
   @override
-  State<email_varification> createState() => _email_varificationState();
+  State<OTP_varification> createState() => _OTP_varificationState();
 }
 
-class _email_varificationState extends State<email_varification> {
+class _OTP_varificationState extends State<OTP_varification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +28,7 @@ class _email_varificationState extends State<email_varification> {
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text('Your Email Address',
+                      child: Text('PIN Verification',
                           style: Theme.of(context).textTheme.titleLarge),
                     ),
                   ),
@@ -37,17 +37,58 @@ class _email_varificationState extends State<email_varification> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                          'A 6 digits pin will send to your email address',
+                          'A 6 digits pin sent to your email address',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
                               ?.copyWith(color: Colors.grey)),
                     ),
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(hintText: 'Email'),
+
+
+
+                  PinCodeTextField(
+                    length: 6,
+                    obscureText: false,
+                    animationType: AnimationType.fade,
+                    pinTheme: PinTheme(
+                      shape: PinCodeFieldShape.box,
+                      borderRadius: BorderRadius.circular(5),
+                      fieldHeight: 50,
+                      fieldWidth: 40,
+                      activeFillColor: Colors.white,
+                      inactiveFillColor: Colors.white,
+                      inactiveColor: Colors.blue,
+                      activeColor: Colors.white,
+                      selectedFillColor: Colors.white,
+                      selectedColor: Colors.blueAccent,
+
+                    ),
+                    animationDuration: Duration(milliseconds: 300),
+                    backgroundColor: Colors.white,
+                    enableActiveFill: true,
+                    cursorColor: Colors.blueAccent,
+
+                    onCompleted: (v) {
+                      print("Completed");
+                    },
+                    onChanged: (value) {
+                      print(value);
+                      setState(() {
+
+                      });
+                    },
+                    beforeTextPaste: (text) {
+                      print("Allowing to paste $text");
+                      //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                      //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                      return true;
+                    }, appContext: context,
                   ),
+
+
+
+                  
                   SizedBox(
                     height: 15,
                   ),
@@ -57,9 +98,7 @@ class _email_varificationState extends State<email_varification> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>OTP_varification()));
-                        },
+                        onPressed: () {},
                         child: const Icon(Icons.arrow_forward_ios_sharp)),
                   ),
                   Row(
