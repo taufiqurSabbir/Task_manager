@@ -1,15 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:task_managment/UI/screens/cancle_screen.dart';
+import 'package:task_managment/UI/screens/completed_screen.dart';
+import 'package:task_managment/UI/screens/new_task_screen.dart';
+import 'package:task_managment/UI/screens/progress_screen.dart';
 
-class buttom_nagigation extends StatefulWidget {
-  const buttom_nagigation({super.key});
+class Buttom_nav extends StatefulWidget {
+  const Buttom_nav({Key? key}) : super(key: key);
 
   @override
-  State<buttom_nagigation> createState() => _buttom_nagigationState();
+  State<Buttom_nav> createState() => _Buttom_navState();
 }
 
-class _buttom_nagigationState extends State<buttom_nagigation> {
+class _Buttom_navState extends State<Buttom_nav> {
+  int page_index=0;
+  final List<Widget> _screens = [
+    new_task(),
+    progress(),
+    completed(),
+    cancle(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: _screens[page_index],
+      bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.grey,
+        showUnselectedLabels: true,
+        showSelectedLabels: true,
+        unselectedLabelStyle: TextStyle(
+          color: Colors.grey
+        ),
+        currentIndex: page_index,
+        onTap: (int index){
+          page_index=index;
+          print(page_index);
+         if(mounted){
+           setState(() {
+           });
+         }
+        },
+        selectedItemColor: Colors.blueAccent,
+        items:   [
+        BottomNavigationBarItem(icon: Icon(Icons.task),label: 'New Task'),
+        BottomNavigationBarItem(icon: Icon(Icons.account_tree),label: 'Progress '),
+        BottomNavigationBarItem(icon: Icon(Icons.done_all),label: 'Completed'),
+        BottomNavigationBarItem(icon: Icon(Icons.cancel_outlined),label: 'Canclled'),
+      ],),
+    );
   }
 }
+

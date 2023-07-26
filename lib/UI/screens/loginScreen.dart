@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_managment/UI/screens/buttom_navigation.dart';
 import 'package:task_managment/UI/screens/email_varification_screen.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
 
@@ -65,7 +66,9 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Buttom_nav()), (route) => false);
+                      },
                       child: const Icon(Icons.arrow_forward_ios_sharp)),
                 ),
                 Center(
