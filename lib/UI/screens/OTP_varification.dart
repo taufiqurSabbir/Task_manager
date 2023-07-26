@@ -105,7 +105,7 @@ class _OTP_varificationState extends State<OTP_varification> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Have an account',
+                        'Already Have an account?',
                         style: TextStyle(
                             fontWeight: FontWeight.w500,
                             color: Colors.black,
