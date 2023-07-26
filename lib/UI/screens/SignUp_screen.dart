@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/loginScreen.dart';
-
 import '../widget/screen_background.dart';
-import 'email_varification_screen.dart';
 
 class signup extends StatefulWidget {
   const signup({Key? key}) : super(key: key);
