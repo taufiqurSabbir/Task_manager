@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:task_managment/UI/screens/OTP_varification.dart';
-import 'package:task_managment/UI/widget/screen_background.dart';
 
-class email_varification extends StatefulWidget {
-  const email_varification({Key? key}) : super(key: key);
+import '../../widget/screen_background.dart';
+import 'loginScreen.dart';
+
+
+class reset_password extends StatefulWidget {
+  const reset_password({Key? key}) : super(key: key);
 
   @override
-  State<email_varification> createState() => _email_varificationState();
+  State<reset_password> createState() => _reset_passwordState();
 }
 
-class _email_varificationState extends State<email_varification> {
+class _reset_passwordState extends State<reset_password> {
+  bool password = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +31,7 @@ class _email_varificationState extends State<email_varification> {
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text('Your Email Address',
+                      child: Text('Set Password',
                           style: Theme.of(context).textTheme.titleLarge),
                     ),
                   ),
@@ -37,7 +40,7 @@ class _email_varificationState extends State<email_varification> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                          'A 6 digits pin will send to your email address',
+                          'Minimum password should be 8 letters with number and symbols',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
@@ -45,8 +48,41 @@ class _email_varificationState extends State<email_varification> {
                     ),
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(hintText: 'Email'),
+                    keyboardType: TextInputType.text,
+                    decoration:  InputDecoration(hintText: 'Password',
+                      suffixIcon: IconButton(onPressed: (){
+                        password = false;
+                        setState(() {});
+                        Future.delayed(Duration(seconds: 1)).then((value) {
+                          password = true;
+                          setState(() {});
+                        });
+
+                      }, icon: Icon(Icons.remove_red_eye),)
+                    ),
+                    obscureText: password,
+
+
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration:  InputDecoration(hintText: 'Confirm Password',
+                        suffixIcon: IconButton(onPressed: (){
+                          password = false;
+                          setState(() {});
+                          Future.delayed(Duration(seconds: 1)).then((value) {
+                            password = true;
+                            setState(() {});
+                          });
+
+                        }, icon: Icon(Icons.remove_red_eye),)
+                    ),
+                    obscureText: password,
+
+
                   ),
                   SizedBox(
                     height: 15,
@@ -58,9 +94,9 @@ class _email_varificationState extends State<email_varification> {
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>OTP_varification()));
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Login()), (route) => false);
                         },
-                        child: const Icon(Icons.arrow_forward_ios_sharp)),
+                        child: const Text('Confirm')),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +111,7 @@ class _email_varificationState extends State<email_varification> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Login()), (route) => false);
                           },
                           child: const Text('Sign In'))
                     ],

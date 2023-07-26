@@ -24,6 +24,7 @@ class _Buttom_navState extends State<Buttom_nav> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[page_index],
+
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
@@ -42,9 +43,9 @@ class _Buttom_navState extends State<Buttom_nav> {
         },
         selectedItemColor: Colors.blueAccent,
         items:   [
-        BottomNavigationBarItem(icon: Icon(Icons.task),label: 'New Task'),
-        BottomNavigationBarItem(icon: Icon(Icons.account_tree),label: 'Progress '),
-        BottomNavigationBarItem(icon: Icon(Icons.done_all),label: 'Completed'),
+        BottomNavigationBarItem(icon: Icon(Icons.add_box_outlined),label: 'New Task'),
+        BottomNavigationBarItem(icon: Icon(Icons.insert_chart_outlined_sharp),label: 'Progress '),
+        BottomNavigationBarItem(icon: Icon(Icons.task_alt),label: 'Completed'),
         BottomNavigationBarItem(icon: Icon(Icons.cancel_outlined),label: 'Canclled'),
       ],),
     );

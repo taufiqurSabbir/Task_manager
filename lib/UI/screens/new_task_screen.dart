@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_managment/UI/screens/add_new_task.dart';
 
 import '../widget/User_profile_banner.dart';
 import '../widget/task_list.dart';
@@ -15,15 +16,15 @@ class _new_taskState extends State<new_task> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: SafeArea(
         child: Container(
           color: Colors.grey.shade200,
           child: Column(
             children: [
-              Container(
-                color: Colors.blueAccent,
-                child: const User_profile_banner(),
-              ),
+
+               const User_profile_banner(),
+
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Row(
@@ -71,6 +72,10 @@ class _new_taskState extends State<new_task> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>add_new_task()));
+      },child: Icon(Icons.add),),
     );
+
   }
 }

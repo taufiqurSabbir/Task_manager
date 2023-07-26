@@ -3,7 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_managment/UI/utils/asset_utils.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
 
-import 'loginScreen.dart';
+import 'auth/loginScreen.dart';
+
+
 
 class Splash_screen extends StatefulWidget {
   const Splash_screen({Key? key}) : super(key: key);

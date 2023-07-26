@@ -19,7 +19,7 @@ class screen_background extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        child
+        SafeArea(child: child)
       ],
     );
   }

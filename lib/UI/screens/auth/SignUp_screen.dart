@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:task_managment/UI/screens/buttom_navigation.dart';
-import 'package:task_managment/UI/screens/email_varification_screen.dart';
-import 'package:task_managment/UI/widget/screen_background.dart';
 
-import 'SignUp_screen.dart';
+import '../../widget/screen_background.dart';
+import 'loginScreen.dart';
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+class signup extends StatefulWidget {
+  const signup({Key? key}) : super(key: key);
 
   @override
-  State<Login> createState() => _LoginState();
+  State<signup> createState() => _signupState();
 }
 
-class _LoginState extends State<Login> {
+class _signupState extends State<signup> {
   bool password = true;
   @override
   Widget build(BuildContext context) {
@@ -32,10 +30,8 @@ class _LoginState extends State<Login> {
                   padding: const EdgeInsets.only(bottom: 15.0),
                   child: Align(
                     alignment: Alignment.topLeft,
-                    child: Text('Get Started with',
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge),
+                    child: Text('Join With US',
+                        style: Theme.of(context).textTheme.titleLarge),
                   ),
                 ),
                 TextFormField(
@@ -46,18 +42,40 @@ class _LoginState extends State<Login> {
                   height: 15,
                 ),
                 TextFormField(
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(hintText: 'First Name'),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  decoration: const InputDecoration(hintText: 'Last Name'),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(hintText: 'Mobile'),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                       hintText: 'Password',
                       suffixIcon: IconButton(
                           onPressed: () {
                             password = false;
                             setState(() {});
-                            Future.delayed(Duration(seconds: 1)).then((value) {
+                            Future.delayed(Duration(seconds: 2)).then((value) {
                               password = true;
                               setState(() {});
                             });
                           },
-                          icon: Icon(Icons.remove_red_eye))),
+                          icon: Icon(Icons.remove_red_eye_outlined))),
                   obscureText: password,
                 ),
                 SizedBox(
@@ -66,32 +84,14 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Buttom_nav()), (route) => false);
-                      },
+                      onPressed: () {},
                       child: const Icon(Icons.arrow_forward_ios_sharp)),
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 18),
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => email_varification()));
-                        },
-                        child: const Text(
-                          'Forget Password?',
-                          style: TextStyle(color: Colors.grey),
-                        )),
-                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Don\'t have an account',
+                      'Alredy have an account?',
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           color: Colors.black,
@@ -100,9 +100,10 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>signup()));
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => Login()));
                         },
-                        child: const Text('Sign Up'))
+                        child: const Text('Sign in'))
                   ],
                 )
               ],

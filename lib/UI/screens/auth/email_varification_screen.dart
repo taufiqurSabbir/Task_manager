@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:task_managment/UI/widget/screen_background.dart';
 
-import '../widget/screen_background.dart';
-import 'loginScreen.dart';
+import 'OTP_varification.dart';
 
-class reset_password extends StatefulWidget {
-  const reset_password({Key? key}) : super(key: key);
+class email_varification extends StatefulWidget {
+  const email_varification({Key? key}) : super(key: key);
 
   @override
-  State<reset_password> createState() => _reset_passwordState();
+  State<email_varification> createState() => _email_varificationState();
 }
 
-class _reset_passwordState extends State<reset_password> {
-  bool password = true;
+class _email_varificationState extends State<email_varification> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +29,7 @@ class _reset_passwordState extends State<reset_password> {
                     padding: const EdgeInsets.only(bottom: 15.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text('Set Password',
+                      child: Text('Your Email Address',
                           style: Theme.of(context).textTheme.titleLarge),
                     ),
                   ),
@@ -39,7 +38,7 @@ class _reset_passwordState extends State<reset_password> {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                          'Minimum password should be 8 letters with number and symbols',
+                          'A 6 digits pin will send to your email address',
                           style: Theme.of(context)
                               .textTheme
                               .bodyMedium
@@ -47,41 +46,8 @@ class _reset_passwordState extends State<reset_password> {
                     ),
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.text,
-                    decoration:  InputDecoration(hintText: 'Password',
-                      suffixIcon: IconButton(onPressed: (){
-                        password = false;
-                        setState(() {});
-                        Future.delayed(Duration(seconds: 1)).then((value) {
-                          password = true;
-                          setState(() {});
-                        });
-
-                      }, icon: Icon(Icons.remove_red_eye),)
-                    ),
-                    obscureText: password,
-
-
-                  ),
-                  SizedBox(
-                    height: 15,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.text,
-                    decoration:  InputDecoration(hintText: 'Confirm Password',
-                        suffixIcon: IconButton(onPressed: (){
-                          password = false;
-                          setState(() {});
-                          Future.delayed(Duration(seconds: 1)).then((value) {
-                            password = true;
-                            setState(() {});
-                          });
-
-                        }, icon: Icon(Icons.remove_red_eye),)
-                    ),
-                    obscureText: password,
-
-
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(hintText: 'Email'),
                   ),
                   SizedBox(
                     height: 15,
@@ -93,9 +59,9 @@ class _reset_passwordState extends State<reset_password> {
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Login()), (route) => false);
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>OTP_varification()));
                         },
-                        child: const Text('Confirm')),
+                        child: const Icon(Icons.arrow_forward_ios_sharp)),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +76,7 @@ class _reset_passwordState extends State<reset_password> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Login()), (route) => false);
+                            Navigator.pop(context);
                           },
                           child: const Text('Sign In'))
                     ],
