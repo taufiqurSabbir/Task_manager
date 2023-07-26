@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import '../widget/User_profile_banner.dart';
+import '../widget/task_list.dart';
+import '../widget/task_summary.dart';
+
 class new_task extends StatefulWidget {
   const new_task({Key? key}) : super(key: key);
 
@@ -11,8 +15,61 @@ class _new_taskState extends State<new_task> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
+      body: SafeArea(
+        child: Container(
+          color: Colors.grey.shade200,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blueAccent,
+                child: const User_profile_banner(),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Task_Summary(
+                      number: 50,
+                      title: 'New',
+                    )),
+                    Expanded(
+                        child: Task_Summary(
+                      number: 50,
+                      title: 'Progress',
+                    )),
+                    Expanded(
+                        child: Task_Summary(
+                      number: 50,
+                      title: 'Cancel',
+                    )),
+                    Expanded(
+                        child: Task_Summary(
+                      number: 50,
+                      title: 'Completed',
+                    )),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: 10,
+                  itemBuilder: (context, index) {
+                    return const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Task_list(colour: Colors.blueAccent, status_name: 'New',),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider(
+                      height: 4,
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
