@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:task_managment/UI/screens/reset_password.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
+
+import 'loginScreen.dart';
 
 class OTP_varification extends StatefulWidget {
   const OTP_varification({Key? key}) : super(key: key);
@@ -51,6 +54,7 @@ class _OTP_varificationState extends State<OTP_varification> {
                     length: 6,
                     obscureText: false,
                     animationType: AnimationType.fade,
+                    keyboardType: TextInputType.number,
                     pinTheme: PinTheme(
                       shape: PinCodeFieldShape.box,
                       borderRadius: BorderRadius.circular(5),
@@ -58,7 +62,7 @@ class _OTP_varificationState extends State<OTP_varification> {
                       fieldWidth: 40,
                       activeFillColor: Colors.white,
                       inactiveFillColor: Colors.white,
-                      inactiveColor: Colors.blue,
+                      inactiveColor: Colors.red,
                       activeColor: Colors.white,
                       selectedFillColor: Colors.white,
                       selectedColor: Colors.blueAccent,
@@ -98,8 +102,10 @@ class _OTP_varificationState extends State<OTP_varification> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: () {},
-                        child: const Icon(Icons.arrow_forward_ios_sharp)),
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const reset_password()), (route) => false);
+                        },
+                        child: const Text('Varify')),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -114,7 +120,7 @@ class _OTP_varificationState extends State<OTP_varification> {
                       ),
                       TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Login()), (route) => false);
                           },
                           child: const Text('Sign In'))
                     ],

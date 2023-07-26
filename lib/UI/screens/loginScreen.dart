@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/email_varification_screen.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
 
+import 'SignUp_screen.dart';
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -70,7 +72,12 @@ class _LoginState extends State<Login> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 18),
                     child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => email_varification()));
+                        },
                         child: const Text(
                           'Forget Password?',
                           style: TextStyle(color: Colors.grey),
@@ -90,10 +97,7 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => email_varification()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>signup()));
                         },
                         child: const Text('Sign Up'))
                   ],
