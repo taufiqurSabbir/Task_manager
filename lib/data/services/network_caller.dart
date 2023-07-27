@@ -10,13 +10,17 @@ class NetworkCaller{
     Response response =await get(Uri.parse(url));
     try{
       if (response.statusCode == 200) {
+
         return NetworkResponse(true,response.statusCode,jsonDecode(response.body));
+
       } else {
+
         return NetworkResponse(false,response.statusCode,null);
       }
     }catch(e){
         log(e.toString() as num);
     }
+
     return NetworkResponse(false,-1,null);
   }
 
