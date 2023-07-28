@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:task_managment/data/model/network_response.dart';
 import 'package:task_managment/data/services/network_caller.dart';
@@ -41,10 +40,9 @@ class _signupState extends State<signup> {
       "firstName": _first_namecontroller.text.trim(),
       "lastName": _last_namecontroller.text.trim(),
       "mobile": _mobilecontroller.text.trim(),
-      "password": _passwordcontroller.text.trim(),
+      "password": _passwordcontroller.text,
       "photo": "",
     });
-
     _signupinprogress=false;
     if(mounted){
       setState(() {});
@@ -55,19 +53,20 @@ class _signupState extends State<signup> {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration Successfully')));
       }
-      _emailcontroller.clear();
-      _first_namecontroller.clear();
-      _last_namecontroller.clear();
-      _mobilecontroller.clear();
-      _passwordcontroller.clear();
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      // _emailcontroller.clear();
+      // _first_namecontroller.clear();
+      // _last_namecontroller.clear();
+      // _mobilecontroller.clear();
+      // _passwordcontroller.clear();
+      //
+      // Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('Registration failed')));
       }
     }
+    print(response.body);
 
   }
 
@@ -142,7 +141,7 @@ class _signupState extends State<signup> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(hintText: 'Mobile'),
                     validator: (String? value) {
-                      if ((value?.isEmpty ?? true) || (value!.length <= 11)) {
+                      if ((value?.isEmpty ?? true) || (value!.length < 11)) {
                         return 'Enter your valid mobile number';
                       }
                       return null;
@@ -169,7 +168,7 @@ class _signupState extends State<signup> {
                             icon: Icon(Icons.remove_red_eye_outlined))),
                     obscureText: password,
                     validator: (String? value) {
-                      if ((value?.isEmpty ?? true) || (value!.length <= 6)) {
+                      if ((value?.isEmpty ?? true) || (value!.length <= 5)) {
                         return 'Enter your password more than 6';
                       }
                       return null;
@@ -186,8 +185,9 @@ class _signupState extends State<signup> {
                       child: ElevatedButton(
                           onPressed: () {
                             if (!formkey.currentState!.validate()) {
-                              userSignUp();
+                             return;
                             }
+                            userSignUp();
 
                           },
                           child: const Icon(Icons.arrow_forward_ios_sharp)),
