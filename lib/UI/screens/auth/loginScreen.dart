@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/buttom_navigation.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
+import 'package:task_managment/data/model/login_model.dart';
 import 'package:task_managment/data/model/network_response.dart';
 import 'package:task_managment/data/services/network_caller.dart';
 import 'package:task_managment/data/utils/urls.dart';
@@ -30,11 +31,12 @@ class _LoginState extends State<Login> {
     };
     isloginprogress=true;
 
-    final NetworkResponse respnse =
+    final NetworkResponse response =
         await NetworkCaller().postrequest(Urls.login, request_body);
     isloginprogress=false;
 
-    if (respnse.isSuccess) {
+    if (response.isSuccess) {
+      login_model model = login_model.fromJson(response.body!);
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Buttom_nav()), (route) => false);
     } else {
       if(mounted){
