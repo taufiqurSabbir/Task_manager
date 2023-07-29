@@ -1,18 +1,40 @@
+import 'dart:convert';
+
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_managment/data/model/login_model.dart';
 
 class AuthUtlity{
-  Future<void>saveUserInfo(login_model model) async{
+  AuthUtlity._();
+
+  static login_model userInfo = login_model();
+
+  static Future<void>saveUserInfo(login_model model) async{
    SharedPreferences _sharep = await SharedPreferences.getInstance();
-   _sharep.setString(key, value)
+   await _sharep.setString('user-data', jsonEncode(model.toJson()));
   }
 
-  Future<void>clearInfo(){
 
+ static  Future<login_model>getUserInfo() async{
+    SharedPreferences _sharep = await SharedPreferences.getInstance();
+     String  value =  await _sharep.getString('user-data')!;
+      return  login_model.fromJson(jsonDecode(value));
   }
 
-  Future<bool> checkuserlogin{
+  static Future<void>clearInfo() async {
+        SharedPreferences _sharep = await SharedPreferences.getInstance();
+        _sharep.clear();
+  }
+
+  static Future<bool> checkuserlogin() async {
+
+  SharedPreferences _sharep = await SharedPreferences.getInstance();
+  bool islogin =  _sharep.containsKey('user-data');
+
+  if(islogin){
+    userInfo = await getUserInfo();
+  }
+  return islogin;
 
 }
 }

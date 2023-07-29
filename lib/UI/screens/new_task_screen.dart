@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/add_new_task.dart';
+import 'package:task_managment/data/model/auth_utility.dart';
 
+import '../../data/model/login_model.dart';
 import '../widget/User_profile_banner.dart';
 import '../widget/task_list.dart';
 import '../widget/task_summary.dart';
@@ -13,6 +15,12 @@ class new_task extends StatefulWidget {
 }
 
 class _new_taskState extends State<new_task> {
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
