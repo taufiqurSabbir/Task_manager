@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-import 'package:http/http.dart';
+import 'package:flutter/material.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_managment/UI/screens/auth/loginScreen.dart';
 import 'package:task_managment/data/model/login_model.dart';
 
 class AuthUtlity{
@@ -12,6 +14,7 @@ class AuthUtlity{
   static Future<void>saveUserInfo(login_model model) async{
    SharedPreferences _sharep = await SharedPreferences.getInstance();
    await _sharep.setString('user-data', jsonEncode(model.toJson()));
+   userInfo =model;
   }
 
 

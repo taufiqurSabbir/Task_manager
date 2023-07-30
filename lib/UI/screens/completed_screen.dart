@@ -25,15 +25,21 @@ class _completedState extends State<completed> {
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
-
               ),
               Expanded(
                 child: ListView.separated(
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    return const Padding(
+                    return  Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Task_list(colour: Colors.green, status_name: 'Completed',),
+                      child: Task_list(
+                        title: 'jughyu',
+                        description:  'khuj',
+                        date: 'jnhjnhuj',
+                        id:'tasksData[index]',
+                        colour: Colors.green,
+                        status_name: 'Completed',
+                      ),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {

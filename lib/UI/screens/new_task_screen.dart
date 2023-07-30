@@ -1,8 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/add_new_task.dart';
 import 'package:task_managment/data/model/auth_utility.dart';
+import 'package:task_managment/data/model/network_response.dart';
+import 'package:task_managment/data/services/network_caller.dart';
 
 import '../../data/model/login_model.dart';
+import '../../data/model/tasks.dart';
+import '../../data/utils/urls.dart';
 import '../widget/User_profile_banner.dart';
 import '../widget/task_list.dart';
 import '../widget/task_summary.dart';
@@ -15,24 +22,38 @@ class new_task extends StatefulWidget {
 }
 
 class _new_taskState extends State<new_task> {
+  List<tasks> data = [];
+  List<dynamic> tasksData = [];
 
   @override
   void initState() {
-
+    Newtask();
+    print(tasksData.length);
+    setState(() {});
     super.initState();
   }
+
+  Future<void> Newtask() async {
+    NetworkResponse response = await NetworkCaller().getrequest(Urls.new_list);
+
+    if (response.isSuccess) {
+      setState(() {
+        tasksData = response.body!['data'];
+      });
+    } else {
+      log(response.body.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SafeArea(
         child: Container(
           color: Colors.grey.shade200,
           child: Column(
             children: [
-
-               const User_profile_banner(),
-
+              const User_profile_banner(),
               const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Row(
@@ -62,11 +83,18 @@ class _new_taskState extends State<new_task> {
               ),
               Expanded(
                 child: ListView.separated(
-                  itemCount: 10,
+                  itemCount: tasksData.length,
                   itemBuilder: (context, index) {
-                    return const Padding(
+                    return Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Task_list(colour: Colors.blueAccent, status_name: 'New',),
+                      child: Task_list(
+                       title: tasksData[index]['title'],
+                       description: tasksData[index]['description'],
+                       date: tasksData[index]['createdDate'],
+                        id:tasksData[index]['_id'],
+                        colour: Colors.blueAccent,
+                        status_name: 'New',
+                      ),
                     );
                   },
                   separatorBuilder: (BuildContext context, int index) {
@@ -80,10 +108,13 @@ class _new_taskState extends State<new_task> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>add_new_task()));
-      },child: Icon(Icons.add),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => add_new_task()));
+        },
+        child: Icon(Icons.add),
+      ),
     );
-
   }
 }

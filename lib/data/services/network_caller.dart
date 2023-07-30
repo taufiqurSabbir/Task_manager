@@ -1,25 +1,35 @@
 import 'dart:convert';
-import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 import 'package:http/http.dart';
+import 'package:task_managment/UI/screens/auth/loginScreen.dart';
+import 'package:task_managment/app.dart';
+import 'package:task_managment/data/model/auth_utility.dart';
 import 'package:task_managment/data/model/network_response.dart';
 
 class NetworkCaller {
   Future<NetworkResponse> getrequest(String url) async {
-    Response response = await get(Uri.parse(url));
+    Response response = await get(Uri.parse(url),
+      headers: {
+        'token': AuthUtlity.userInfo.token.toString()
+      },
+    );
     try {
       if (response.statusCode == 200) {
-        print(response.body);
+
 
         return NetworkResponse(
             true, response.statusCode, jsonDecode(response.body));
+      }else if(response.statusCode == 401){
+        gotologin();
       } else {
-        print(response.body);
+
 
         return NetworkResponse(false, response.statusCode, null);
       }
     } catch (e) {
-      log(e.toString() as num);
+      developer.log(e.toString());
     }
 
     return NetworkResponse(false, -1, null);
@@ -28,21 +38,33 @@ class NetworkCaller {
   Future<NetworkResponse> postrequest(
       String url, Map<String, dynamic> body) async {
     try {
-      Response response = await post(Uri.parse(url),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode(body),
+      Response response = await post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          'token': AuthUtlity.userInfo.token.toString()
+        },
+        body: jsonEncode(body),
       );
 
       developer.log(response.body);
       if (response.statusCode == 200) {
         return NetworkResponse(
             true, response.statusCode, jsonDecode(response.body));
+      } else if (response.statusCode == 401) {
+        gotologin();
       } else {
         return NetworkResponse(false, response.statusCode, null);
       }
     } catch (e) {
-      log(e.toString() as num);
+      developer.log(e.toString());
     }
     return NetworkResponse(false, -1, null);
+  }
+
+  void gotologin() {
+    AuthUtlity.clearInfo();
+    Navigator.pushAndRemoveUntil(TaskManager.globalKey.currentState!.context,
+        MaterialPageRoute(builder: (context) => Login()), (route) => false);
   }
 }

@@ -1,44 +1,100 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-class Task_list extends StatelessWidget {
-  const Task_list({
-    super.key, required this.colour, required this.status_name,
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:task_managment/data/model/network_response.dart';
+import 'package:task_managment/data/services/network_caller.dart';
+
+import '../../data/utils/urls.dart';
+
+class Task_list extends StatefulWidget {
+  Task_list({
+    required this.title,
+    required this.description,
+    required this.date,
+    required this.id,
+    required this.colour,
+    required this.status_name,
   });
 
-  final  colour;
-  final String status_name;
+  final String title, description, date, id, status_name;
+  final colour;
+
+  @override
+  State<Task_list> createState() => _Task_listState();
+}
+
+class _Task_listState extends State<Task_list> {
+  var items = [
+    'New',
+    'Progress',
+    'Completed',
+    'Canceled',
+  ];
 
   @override
   Widget build(BuildContext context) {
+    Future<void> Statuschage($status) async {
+      log(widget.id.toString());
+      String status_url =
+          '${Urls.baseurl}/updateTaskStatus/${widget.id}/${$status}';
+      final NetworkResponse response =
+          await NetworkCaller().getrequest(status_url);
+
+      if (response.isSuccess) {
+        if (mounted) {
+
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text('Task Status Updated')));
+
+        }
+        log(response.body.toString());
+      } else {
+        log(response.body.toString());
+      }
+    }
+
+    String dropdownvalue = widget.status_name;
     return Container(
       color: Colors.white,
       child: ListTile(
-        title: Text('Title '),
+        onLongPress: () {
+          setState(() {});
+        },
+        title: Text(widget.title),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('this is subtitle'),
-            Text('02/05/2023'),
+            Text(widget.description),
+            Text(widget.date),
             Row(
               children: [
                 Chip(
                   label: SizedBox(
                     width: 80,
-
                     child: Center(
                       child: Text(
-                        '$status_name',
+                        '${widget.status_name}',
                         style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
-                  backgroundColor: colour,
+                  backgroundColor: widget.colour,
                 ),
                 Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.edit),
-                  color: Colors.blueAccent,
+                DropdownButton<String>(
+                  value: dropdownvalue,
+                  items: items.map((String item) {
+                    return DropdownMenuItem<String>(
+                      value: item,
+                      child: Text(item),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    Statuschage(newValue);
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.edit, color: Colors.blueAccent),
                 ),
                 IconButton(
                   onPressed: () {},

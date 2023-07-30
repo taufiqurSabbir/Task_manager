@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/auth/update_profile.dart';
 
 import '../../data/model/auth_utility.dart';
+import '../screens/auth/loginScreen.dart';
 
-class User_profile_banner extends StatelessWidget {
+class User_profile_banner extends StatefulWidget {
   const User_profile_banner({
     super.key,
   });
 
+  @override
+  State<User_profile_banner> createState() => _User_profile_bannerState();
+}
+
+class _User_profile_bannerState extends State<User_profile_banner> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,6 +44,17 @@ class User_profile_banner extends StatelessWidget {
             '${AuthUtlity.userInfo.data?.email}',
             style: TextStyle(color: Colors.white, fontSize: 12),
           ),
+          trailing:  IconButton(onPressed: () async {
+           await AuthUtlity.clearInfo();
+           if(mounted){
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Login()),
+                      (route) => false);
+
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Logout Successful')));
+                }
+              }, icon: const Icon(Icons.login,color: Colors.white,)),
         ),
       ),
     );
