@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:task_managment/UI/screens/buttom_navigation.dart';
 import 'package:task_managment/data/model/network_response.dart';
 import 'package:task_managment/data/services/network_caller.dart';
 
@@ -43,9 +44,18 @@ class _Task_listState extends State<Task_list> {
 
       if (response.isSuccess) {
         if (mounted) {
-
             ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text('Task Status Updated')));
+                .showSnackBar(const SnackBar(content: Text('Task Status Updated')));
+
+
+
+            if(widget.status_name =='New'){
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Buttom_nav(),settings: RouteSettings(arguments: 0)), (route) => false);
+            }
+            if(widget.status_name =='New'){
+
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const Buttom_nav()), (route) => false);
+            }
 
         }
         log(response.body.toString());
@@ -92,7 +102,7 @@ class _Task_listState extends State<Task_list> {
                   }).toList(),
                   onChanged: (String? newValue) {
                     Statuschage(newValue);
-                    setState(() {});
+
                   },
                   icon: Icon(Icons.edit, color: Colors.blueAccent),
                 ),

@@ -22,7 +22,8 @@ class new_task extends StatefulWidget {
 }
 
 class _new_taskState extends State<new_task> {
-  List<tasks> data = [];
+
+
   List<dynamic> tasksData = [];
 
   @override
@@ -32,6 +33,7 @@ class _new_taskState extends State<new_task> {
     setState(() {});
     super.initState();
   }
+
 
   Future<void> Newtask() async {
     NetworkResponse response = await NetworkCaller().getrequest(Urls.new_list);
@@ -116,5 +118,9 @@ class _new_taskState extends State<new_task> {
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  void new_task_set_state(BuildContext context){
+
   }
 }

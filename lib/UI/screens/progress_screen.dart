@@ -1,5 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+
+import '../../data/model/network_response.dart';
+import '../../data/services/network_caller.dart';
+import '../../data/utils/urls.dart';
+import '../../data/utils/urls.dart';
 import '../widget/User_profile_banner.dart';
 import '../widget/task_list.dart';
 
@@ -11,7 +18,28 @@ class progress extends StatefulWidget {
 }
 
 class _progressState extends State<progress> {
+  List<dynamic> progress_task = [];
+
   @override
+  void initState() {
+    // TODO: implement initState
+    process_task();
+    super.initState();
+  }
+
+  Future<void> process_task() async {
+    NetworkResponse response = await NetworkCaller().getrequest(Urls.Progress);
+
+    if (response.isSuccess) {
+      setState(() {
+        progress_task = response.body!['data'];
+        log(progress_task.toString());
+      });
+    } else {
+      log(response.body.toString());
+    }
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -28,15 +56,15 @@ class _progressState extends State<progress> {
               ),
               Expanded(
                 child: ListView.separated(
-                  itemCount: 10,
+                  itemCount: progress_task.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Task_list(
-                        title: 'jughyu',
-                        description: 'khuj',
-                        date: 'jnhjnhuj',
-                        id:'tasksData[index]',
+                        title: progress_task[index]['title'],
+                        description: progress_task[index]['description'],
+                        date: progress_task[index]['createdDate'],
+                        id: progress_task[index]['_id'],
                         colour: Colors.purple,
                         status_name: 'Progress',
                       ),
