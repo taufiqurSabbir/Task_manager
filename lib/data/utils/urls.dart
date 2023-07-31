@@ -7,5 +7,6 @@ class Urls {
   static String new_list = '$baseurl/listTaskByStatus/New';
   static String completed = '$baseurl/listTaskByStatus/Completed';
   static String Progress = '$baseurl/listTaskByStatus/Progress';
+  static String cancled = '$baseurl/listTaskByStatus/Cancelled';
 
 }

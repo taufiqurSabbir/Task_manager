@@ -64,7 +64,7 @@ class NetworkCaller {
 
   void gotologin() {
     AuthUtlity.clearInfo();
-    Navigator.pushAndRemoveUntil(TaskManager.globalKey.currentState!.context,
+    Navigator.pushAndRemoveUntil(TaskManager.globalKey.currentContext!,
         MaterialPageRoute(builder: (context) => Login()), (route) => false);
   }
 }

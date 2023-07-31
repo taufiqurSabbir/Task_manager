@@ -53,13 +53,13 @@ class _signupState extends State<signup> {
         ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Registration Successfully')));
       }
-      // _emailcontroller.clear();
-      // _first_namecontroller.clear();
-      // _last_namecontroller.clear();
-      // _mobilecontroller.clear();
-      // _passwordcontroller.clear();
-      //
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+      _emailcontroller.clear();
+      _first_namecontroller.clear();
+      _last_namecontroller.clear();
+      _mobilecontroller.clear();
+      _passwordcontroller.clear();
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context)

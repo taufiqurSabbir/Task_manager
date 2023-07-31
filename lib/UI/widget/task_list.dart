@@ -30,7 +30,7 @@ class _Task_listState extends State<Task_list> {
     'New',
     'Progress',
     'Completed',
-    'Canceled',
+    'Cancelled',
   ];
 
   @override
@@ -62,6 +62,12 @@ class _Task_listState extends State<Task_list> {
       } else {
         log(response.body.toString());
       }
+    }
+
+
+    Future<void> delete_task($id)async {
+      String delate_url = '${Urls.baseurl}/deleteTaskdeleteTask/${widget.id}';
+      NetworkResponse response = await NetworkCaller().getrequest(delate_url);
     }
 
     String dropdownvalue = widget.status_name;
@@ -101,13 +107,16 @@ class _Task_listState extends State<Task_list> {
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
+
                     Statuschage(newValue);
 
                   },
                   icon: Icon(Icons.edit, color: Colors.blueAccent),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                   icon: Icon(Icons.delete_forever_outlined),
                   color: Colors.red,
                 ),

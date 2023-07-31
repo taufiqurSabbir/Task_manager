@@ -27,7 +27,7 @@ class _cancleState extends State<cancle> {
   }
 
   Future<void> cancle_task() async {
-    NetworkResponse response = await NetworkCaller().getrequest(Urls.completed);
+    NetworkResponse response = await NetworkCaller().getrequest(Urls.cancled);
 
     if (response.isSuccess) {
       setState(() {
@@ -38,6 +38,9 @@ class _cancleState extends State<cancle> {
       log(response.body.toString());
     }
   }
+
+
+
 
 
   @override
@@ -67,7 +70,7 @@ class _cancleState extends State<cancle> {
                         date:cancle_task_data[index]['createdDate'],
                         id:cancle_task_data[index]['_id'],
                         colour: Colors.red,
-                        status_name: 'Canceled',
+                        status_name: 'Cancelled',
                       ),
                     );
                   },
