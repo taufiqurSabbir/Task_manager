@@ -21,11 +21,13 @@ class Task_list extends StatefulWidget {
   final String title, description, date, id, status_name;
   final colour;
 
+
   @override
   State<Task_list> createState() => _Task_listState();
 }
 
 class _Task_listState extends State<Task_list> {
+  bool isloding=false;
   var items = [
     'New',
     'Progress',
@@ -35,27 +37,24 @@ class _Task_listState extends State<Task_list> {
 
   @override
   Widget build(BuildContext context) {
+
     Future<void> Statuschage($status) async {
       log(widget.id.toString());
       String status_url =
           '${Urls.baseurl}/updateTaskStatus/${widget.id}/${$status}';
+      isloding=true;
+      setState(() {
+      });
       final NetworkResponse response =
           await NetworkCaller().getrequest(status_url);
-
+      isloding=false;
+      setState(() {
+      });
       if (response.isSuccess) {
         if (mounted) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(const SnackBar(content: Text('Task Status Updated')));
-
-
-
-            if(widget.status_name =='New'){
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> Buttom_nav(),settings: RouteSettings(arguments: 0)), (route) => false);
-            }
-            if(widget.status_name =='New'){
-
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const Buttom_nav()), (route) => false);
-            }
 
         }
         log(response.body.toString());
@@ -66,14 +65,21 @@ class _Task_listState extends State<Task_list> {
 
 
     Future<void> delete_task($id)async {
-      String delate_url = '${Urls.baseurl}/deleteTaskdeleteTask/${widget.id}';
+      String delate_url = '${Urls.baseurl}/deleteTask/${widget.id}';
+      isloding=true;
+      setState(() {
+      });
       NetworkResponse response = await NetworkCaller().getrequest(delate_url);
+      isloding=false;
+      setState(() {
+      });
+       log(response.body.toString());
     }
 
     String dropdownvalue = widget.status_name;
     return Container(
       color: Colors.white,
-      child: ListTile(
+      child: isloding? Center(child: CircularProgressIndicator()): ListTile(
         onLongPress: () {
           setState(() {});
         },
@@ -115,7 +121,31 @@ class _Task_listState extends State<Task_list> {
                 ),
                 IconButton(
                   onPressed: () {
+                      showDialog(context: context, builder: (context){
+                        return AlertDialog(
+                          title: Text('Are you sure?'),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              children: [
 
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            TextButton(onPressed: (){
+                              Navigator.pop(context);
+                            }, child: Text('Cancle')),
+                            TextButton(onPressed: (){
+                              delete_task(widget.id);
+                              setState(() {
+                              });
+                              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Buttom_nav()), (route) => false);
+
+
+                            }, child: Text('Delete'))
+                          ],
+                        );
+                      });
                   },
                   icon: Icon(Icons.delete_forever_outlined),
                   color: Colors.red,

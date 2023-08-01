@@ -38,7 +38,12 @@ class _LoginState extends State<Login> {
     if (response.isSuccess) {
       login_model model = login_model.fromJson(response.body!);
       await AuthUtlity.saveUserInfo(model);
-      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>Buttom_nav()), (route) => false);
+      if(mounted){
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Buttom_nav()),
+            (route) => false);
+      }
     } else {
       if(mounted){
         ScaffoldMessenger.of(context).showSnackBar(

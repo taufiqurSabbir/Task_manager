@@ -18,10 +18,14 @@ class Task_Summary extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: [
+            number !='null'
+                ?
             Text(
-              '$number',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-            ),
+              number ,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+            )
+
+                :  const CircularProgressIndicator(),
             Text('$title')
           ],
         ),

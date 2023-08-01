@@ -23,19 +23,16 @@ class new_task extends StatefulWidget {
 }
 
 class _new_taskState extends State<new_task> {
+  bool isloading = false;
   List<dynamic> tasksData = [];
 
   @override
   void initState() {
     setState(() {
+      task_status();
       Newtask();
-      new_task_count();
-      progress_task_count();
-      cancled_task_count();
-      completed_task_count();
+      task_status();
     });
-
-
 
     print(tasksData.length);
 
@@ -43,7 +40,11 @@ class _new_taskState extends State<new_task> {
   }
 
   Future<void> Newtask() async {
+    isloading = true;
+    setState(() {});
     NetworkResponse response = await NetworkCaller().getrequest(Urls.new_list);
+    isloading = false;
+    setState(() {});
 
     if (response.isSuccess) {
       setState(() {
@@ -54,13 +55,24 @@ class _new_taskState extends State<new_task> {
     }
   }
 
-   int new_count=0;
-   int progress=0;
-   int cancle=0;
-   int completed=0;
+  void task_status() {
+    new_task_count();
+    progress_task_count();
+    cancled_task_count();
+    completed_task_count();
+  }
+
+  int? new_count;
+  int? progress;
+  int? cancle;
+  int? completed;
 
   Future<int?> new_task_count() async {
+    isloading = true;
+    setState(() {});
     NetworkResponse response = await NetworkCaller().getrequest(Urls.new_list);
+    isloading = false;
+    setState(() {});
     List<dynamic> items = [];
     if (response.isSuccess) {
       items = response.body!['data'];
@@ -82,7 +94,6 @@ class _new_taskState extends State<new_task> {
       return progress;
     }
   }
-
 
   Future<int?> cancled_task_count() async {
     NetworkResponse response = await NetworkCaller().getrequest(Urls.cancled);
@@ -144,29 +155,31 @@ class _new_taskState extends State<new_task> {
                   ],
                 ),
               ),
-              Expanded(
-                child: ListView.separated(
-                  itemCount: tasksData.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Task_list(
-                        title: tasksData[index]['title'],
-                        description: tasksData[index]['description'],
-                        date: tasksData[index]['createdDate'],
-                        id: tasksData[index]['_id'],
-                        colour: Colors.blueAccent,
-                        status_name: 'New',
+              isloading
+                  ? CircularProgressIndicator()
+                  : Expanded(
+                      child: ListView.separated(
+                        itemCount: tasksData.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Task_list(
+                              title: tasksData[index]['title'],
+                              description: tasksData[index]['description'],
+                              date: tasksData[index]['createdDate'],
+                              id: tasksData[index]['_id'],
+                              colour: Colors.blueAccent,
+                              status_name: 'New',
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 4,
+                          );
+                        },
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      height: 4,
-                    );
-                  },
-                ),
-              )
+                    )
             ],
           ),
         ),
