@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/add_new_task.dart';
 import 'package:task_managment/data/model/auth_utility.dart';
 import 'package:task_managment/data/model/network_response.dart';
+import 'package:task_managment/data/model/task_count.dart';
 import 'package:task_managment/data/services/network_caller.dart';
 
 import '../../data/model/login_model.dart';
@@ -22,18 +23,24 @@ class new_task extends StatefulWidget {
 }
 
 class _new_taskState extends State<new_task> {
-
-
   List<dynamic> tasksData = [];
 
   @override
   void initState() {
-    Newtask();
+    setState(() {
+      Newtask();
+      new_task_count();
+      progress_task_count();
+      cancled_task_count();
+      completed_task_count();
+    });
+
+
+
     print(tasksData.length);
-    setState(() {});
+
     super.initState();
   }
-
 
   Future<void> Newtask() async {
     NetworkResponse response = await NetworkCaller().getrequest(Urls.new_list);
@@ -47,6 +54,60 @@ class _new_taskState extends State<new_task> {
     }
   }
 
+   int new_count=0;
+   int progress=0;
+   int cancle=0;
+   int completed=0;
+
+  Future<int?> new_task_count() async {
+    NetworkResponse response = await NetworkCaller().getrequest(Urls.new_list);
+    List<dynamic> items = [];
+    if (response.isSuccess) {
+      items = response.body!['data'];
+      new_count = items.length;
+      return new_count;
+    } else {
+      return new_count;
+    }
+  }
+
+  Future<int?> progress_task_count() async {
+    NetworkResponse response = await NetworkCaller().getrequest(Urls.Progress);
+    List<dynamic> items = [];
+    if (response.isSuccess) {
+      items = response.body!['data'];
+      progress = items.length;
+      return progress;
+    } else {
+      return progress;
+    }
+  }
+
+
+  Future<int?> cancled_task_count() async {
+    NetworkResponse response = await NetworkCaller().getrequest(Urls.cancled);
+    List<dynamic> items = [];
+    if (response.isSuccess) {
+      items = response.body!['data'];
+      cancle = items.length;
+      return cancle;
+    } else {
+      return cancle;
+    }
+  }
+
+  Future<int?> completed_task_count() async {
+    NetworkResponse response = await NetworkCaller().getrequest(Urls.completed);
+    List<dynamic> items = [];
+    if (response.isSuccess) {
+      items = response.body!['data'];
+      completed = items.length;
+      return completed;
+    } else {
+      return completed;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,28 +117,28 @@ class _new_taskState extends State<new_task> {
           child: Column(
             children: [
               const User_profile_banner(),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     Expanded(
                         child: Task_Summary(
-                      number: 50,
+                      number: new_count.toString(),
                       title: 'New',
                     )),
                     Expanded(
                         child: Task_Summary(
-                      number: 50,
+                      number: progress.toString(),
                       title: 'Progress',
                     )),
                     Expanded(
                         child: Task_Summary(
-                      number: 50,
+                      number: cancle.toString(),
                       title: 'Cancel',
                     )),
                     Expanded(
                         child: Task_Summary(
-                      number: 50,
+                      number: completed.toString(),
                       title: 'Completed',
                     )),
                   ],
@@ -90,10 +151,10 @@ class _new_taskState extends State<new_task> {
                     return Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Task_list(
-                       title: tasksData[index]['title'],
-                       description: tasksData[index]['description'],
-                       date: tasksData[index]['createdDate'],
-                        id:tasksData[index]['_id'],
+                        title: tasksData[index]['title'],
+                        description: tasksData[index]['description'],
+                        date: tasksData[index]['createdDate'],
+                        id: tasksData[index]['_id'],
                         colour: Colors.blueAccent,
                         status_name: 'New',
                       ),
@@ -120,7 +181,5 @@ class _new_taskState extends State<new_task> {
     );
   }
 
-  void new_task_set_state(BuildContext context){
-
-  }
+  void new_task_set_state(BuildContext context) {}
 }

@@ -31,10 +31,11 @@ class _completedState extends State<completed> {
     NetworkResponse response = await NetworkCaller().getrequest(Urls.completed);
 
     if (response.isSuccess) {
+      complete_task_data = response.body!['data'];
+      log(complete_task_data.toString());
       setState(() {
-        complete_task_data = response.body!['data'];
-        log(complete_task_data.toString());
       });
+
     } else {
       log(response.body.toString());
     }

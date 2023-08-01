@@ -7,7 +7,7 @@ class Task_Summary extends StatelessWidget {
     required this.title,
   });
 
-  final int number;
+  final String number;
   final String title;
 
   @override
