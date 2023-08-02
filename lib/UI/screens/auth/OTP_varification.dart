@@ -1,18 +1,70 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:task_managment/UI/screens/auth/reset_password.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
+import 'package:task_managment/data/model/network_response.dart';
+import 'package:task_managment/data/services/network_caller.dart';
 
+import '../../../data/utils/urls.dart';
 import 'loginScreen.dart';
 
 class OTP_varification extends StatefulWidget {
-  const OTP_varification({Key? key, required String email}) : super(key: key);
+  final String email;
+  const OTP_varification({Key? key, required  this.email}) : super(key: key);
+
 
   @override
   State<OTP_varification> createState() => _OTP_varificationState();
 }
 
 class _OTP_varificationState extends State<OTP_varification> {
+  GlobalKey<FormState> _otpform = GlobalKey<FormState>();
+TextEditingController _otpcontroller = TextEditingController();
+
+Future<void> otpverify()async {
+  if(_otpcontroller.text==''){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Empty value not allow')));
+  }else{
+    String otpVarifyUrl = Urls.otp_varify+widget.email+'/'+_otpcontroller.text.trim();
+    NetworkResponse response = await NetworkCaller().getrequest(otpVarifyUrl);
+    if(response.isSuccess){
+      log(response.body.toString());
+
+      if(response.body?['status']=='success'){
+        if(mounted){
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) =>reset_password(otp:_otpcontroller.text.trim(),email:widget.email)),
+                  (route) => false);
+        }
+      }else{
+        if(mounted){
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      title: const Text('Warning'),
+                      content: Text(response.body?['data']),
+                      actions: [
+                        TextButton(
+                            onPressed: () {
+                              _otpcontroller.clear();
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Okay'))
+                      ],
+                    ));
+          }
+        }
+
+    }else{
+      log(response.body.toString());
+    }
+
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,44 +103,52 @@ class _OTP_varificationState extends State<OTP_varification> {
 
 
 
-                  PinCodeTextField(
-                    length: 6,
-                    obscureText: false,
-                    animationType: AnimationType.fade,
-                    keyboardType: TextInputType.number,
-                    pinTheme: PinTheme(
-                      shape: PinCodeFieldShape.box,
-                      borderRadius: BorderRadius.circular(5),
-                      fieldHeight: 50,
-                      fieldWidth: 40,
-                      activeFillColor: Colors.white,
-                      inactiveFillColor: Colors.white,
-                      inactiveColor: Colors.red,
-                      activeColor: Colors.white,
-                      selectedFillColor: Colors.white,
-                      selectedColor: Colors.blueAccent,
+                  Form(
+                    child: PinCodeTextField(
+                      length: 6,
+                      controller: _otpcontroller,
+                      obscureText: false,
+                      animationType: AnimationType.fade,
+                      keyboardType: TextInputType.number,
+                      pinTheme: PinTheme(
+                        shape: PinCodeFieldShape.box,
+                        borderRadius: BorderRadius.circular(5),
+                        fieldHeight: 50,
+                        fieldWidth: 40,
+                        activeFillColor: Colors.white,
+                        inactiveFillColor: Colors.white,
+                        inactiveColor: Colors.red,
+                        activeColor: Colors.white,
+                        selectedFillColor: Colors.white,
+                        selectedColor: Colors.blueAccent,
 
+                      ),
+                      animationDuration: Duration(milliseconds: 300),
+                      backgroundColor: Colors.white,
+                      enableActiveFill: true,
+                      cursorColor: Colors.blueAccent,
+                      validator: (String ? value){
+                        if(value?.isEmpty ?? true){
+                          return 'Enter OTP here';
+                        }
+                      },
+
+                      onCompleted: (v) {
+                        print("Completed");
+                      },
+                      onChanged: (value) {
+                        print(value);
+                        setState(() {
+
+                        });
+                      },
+                      beforeTextPaste: (text) {
+                        print("Allowing to paste $text");
+                        //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
+                        //but you can show anything you want here, like your pop up saying wrong paste format or etc
+                        return true;
+                      }, appContext: context,
                     ),
-                    animationDuration: Duration(milliseconds: 300),
-                    backgroundColor: Colors.white,
-                    enableActiveFill: true,
-                    cursorColor: Colors.blueAccent,
-
-                    onCompleted: (v) {
-                      print("Completed");
-                    },
-                    onChanged: (value) {
-                      print(value);
-                      setState(() {
-
-                      });
-                    },
-                    beforeTextPaste: (text) {
-                      print("Allowing to paste $text");
-                      //if you return true then it will show the paste confirmation dialog. Otherwise if false, then nothing will happen.
-                      //but you can show anything you want here, like your pop up saying wrong paste format or etc
-                      return true;
-                    }, appContext: context,
                   ),
 
 
@@ -104,9 +164,14 @@ class _OTP_varificationState extends State<OTP_varification> {
                     width: double.infinity,
                     child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const reset_password()), (route) => false);
+                          // if(!_otpform.currentState!.validate()){
+                          //   return;
+                          // }
+
+                          otpverify();
+
                         },
-                        child: const Text('Varify')),
+                        child: const Text('Verify')),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

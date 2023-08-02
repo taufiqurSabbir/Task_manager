@@ -9,5 +9,9 @@ class Urls {
   static String Progress = '$baseurl/listTaskByStatus/Progress';
   static String cancled = '$baseurl/listTaskByStatus/Cancelled';
   static String forgetpass = '$baseurl/RecoverVerifyEmail/';
+  static String otp_varify = '$baseurl/RecoverVerifyOTP/';
+  static String password_change = '$baseurl/RecoverResetPass/';
+  static String taskStatusCount = '$baseurl/taskStatusCount/';
+
 
 }

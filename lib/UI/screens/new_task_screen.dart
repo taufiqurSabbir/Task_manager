@@ -28,12 +28,12 @@ class _new_taskState extends State<new_task> {
 
   @override
   void initState() {
-    setState(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      task_count();
       task_status();
       Newtask();
       task_status();
     });
-
     print(tasksData.length);
 
     super.initState();
@@ -67,6 +67,19 @@ class _new_taskState extends State<new_task> {
   int? cancle;
   int? completed;
 
+  List<dynamic>task_count_list=[];
+
+  Future<void>task_count()async {
+    NetworkResponse response =await NetworkCaller().getrequest(Urls.taskStatusCount);
+    if(response.isSuccess){
+
+      task_count_list = response.body!['data'];
+      log(task_count_list[1].toString());
+    }else{
+      log(response.body.toString());
+    }
+  }
+
   Future<int?> new_task_count() async {
     isloading = true;
     setState(() {});
@@ -79,7 +92,7 @@ class _new_taskState extends State<new_task> {
       new_count = items.length;
       return new_count;
     } else {
-      return new_count;
+      return items.length;
     }
   }
 
@@ -158,26 +171,35 @@ class _new_taskState extends State<new_task> {
               isloading
                   ? CircularProgressIndicator()
                   : Expanded(
-                      child: ListView.separated(
-                        itemCount: tasksData.length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Task_list(
-                              title: tasksData[index]['title'],
-                              description: tasksData[index]['description'],
-                              date: tasksData[index]['createdDate'],
-                              id: tasksData[index]['_id'],
-                              colour: Colors.blueAccent,
-                              status_name: 'New',
-                            ),
-                          );
+                      child: RefreshIndicator(
+                        onRefresh: () async{
+                          setState(() {
+                            task_status();
+                            Newtask();
+                          });
+
                         },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const Divider(
-                            height: 4,
-                          );
-                        },
+                        child: ListView.separated(
+                          itemCount: tasksData.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Task_list(
+                                title: tasksData[index]['title'],
+                                description: tasksData[index]['description'],
+                                date: tasksData[index]['createdDate'],
+                                id: tasksData[index]['_id'],
+                                colour: Colors.blueAccent,
+                                status_name: 'New',
+                              ),
+                            );
+                          },
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const Divider(
+                              height: 4,
+                            );
+                          },
+                        ),
                       ),
                     )
             ],

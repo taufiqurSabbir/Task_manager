@@ -39,12 +39,12 @@ class _email_varificationState extends State<email_varification> {
         showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: Text('Warning'),
+                  title: const Text('Warning'),
                   content: Text(response.body?['data']),
               actions: [
                 TextButton(onPressed: (){
                   Navigator.pop(context);
-                }, child: Text('Okay'))
+                }, child: const Text('Okay'))
               ],
                 ));
 
