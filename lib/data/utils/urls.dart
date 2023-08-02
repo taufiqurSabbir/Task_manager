@@ -8,5 +8,6 @@ class Urls {
   static String completed = '$baseurl/listTaskByStatus/Completed';
   static String Progress = '$baseurl/listTaskByStatus/Progress';
   static String cancled = '$baseurl/listTaskByStatus/Cancelled';
+  static String forgetpass = '$baseurl/RecoverVerifyEmail/';
 
 }

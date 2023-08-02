@@ -6,13 +6,14 @@ import 'package:task_managment/UI/widget/screen_background.dart';
 import 'loginScreen.dart';
 
 class OTP_varification extends StatefulWidget {
-  const OTP_varification({Key? key}) : super(key: key);
+  const OTP_varification({Key? key, required String email}) : super(key: key);
 
   @override
   State<OTP_varification> createState() => _OTP_varificationState();
 }
 
 class _OTP_varificationState extends State<OTP_varification> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
