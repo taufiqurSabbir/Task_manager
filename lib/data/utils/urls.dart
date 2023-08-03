@@ -12,6 +12,7 @@ class Urls {
   static String otp_varify = '$baseurl/RecoverVerifyOTP/';
   static String password_change = '$baseurl/RecoverResetPass/';
   static String taskStatusCount = '$baseurl/taskStatusCount/';
+  static String profile_update = '$baseurl/profileUpdate/';
 
 
 }

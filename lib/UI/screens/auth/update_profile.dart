@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/widget/User_profile_banner.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
+import 'package:task_managment/data/model/network_response.dart';
+import 'package:task_managment/data/services/network_caller.dart';
+import 'package:task_managment/data/utils/urls.dart';
 import '../../../data/model/auth_utility.dart';
 
 class update_profile extends StatefulWidget {
@@ -29,7 +32,6 @@ class _update_profileState extends State<update_profile> {
     });
   }
 
-  final TextEditingController _imageController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
@@ -44,12 +46,33 @@ class _update_profileState extends State<update_profile> {
     _mobileController.text = AuthUtlity.userInfo.data!.mobile!;
   }
 
+
+
+
   @override
   void initState() {
     // TODO: implement initState
     user_data();
     super.initState();
   }
+
+  Future<void>updateprofile()async {
+    NetworkResponse response = await NetworkCaller().postrequest(Urls.profile_update, <String,dynamic>{
+      "email":_emailController.text.trim(),
+      "firstName":_firstnameController.text.trim(),
+      "lastName":_lastnameController.text.trim(),
+      "mobile":_mobileController.text.trim(),
+      "photo":_pimage.toString(),
+    });
+
+    if(response.isSuccess){
+      log(_pimage.toString());
+      log(response.statusCode.toString());
+    }else{
+      log(response.statusCode.toString());
+    }
+  }
+
 
   Widget build(BuildContext context) {
     bool password = true;
@@ -196,6 +219,7 @@ class _update_profileState extends State<update_profile> {
                               if (!_updateform.currentState!.validate()) {
                                 return;
                               }
+                              updateprofile();
                             },
                             child: const Icon(Icons.arrow_forward_ios_sharp)),
                       ),
