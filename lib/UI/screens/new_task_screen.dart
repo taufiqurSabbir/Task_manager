@@ -169,7 +169,7 @@ class _new_taskState extends State<new_task> {
                 ),
               ),
               isloading
-                  ? CircularProgressIndicator()
+                  ? const CircularProgressIndicator()
                   : Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async{

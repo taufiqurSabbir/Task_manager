@@ -33,8 +33,6 @@ class _completedState extends State<completed> {
     if (response.isSuccess) {
       complete_task_data = response.body!['data'];
       log(complete_task_data.toString());
-      setState(() {
-      });
 
     } else {
       log(response.body.toString());

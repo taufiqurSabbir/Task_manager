@@ -71,8 +71,6 @@ class _Task_listState extends State<Task_list> {
       });
       NetworkResponse response = await NetworkCaller().getrequest(delate_url);
       isloding=false;
-      setState(() {
-      });
        log(response.body.toString());
     }
 

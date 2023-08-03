@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/auth/update_profile.dart';
+import 'package:task_managment/data/model/login_model.dart';
 
 import '../../data/model/auth_utility.dart';
 import '../screens/auth/loginScreen.dart';
 
 class User_profile_banner extends StatefulWidget {
+  // final login_model data;
+
   const User_profile_banner({
     super.key,
+    // required this.data,
   });
 
   @override
   State<User_profile_banner> createState() => _User_profile_bannerState();
 }
+
+
 
 class _User_profile_bannerState extends State<User_profile_banner> {
   @override
