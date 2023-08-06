@@ -44,6 +44,7 @@ class _update_profileState extends State<update_profile> {
     _firstnameController.text = AuthUtlity.userInfo.data!.firstName!;
     _lastnameController.text = AuthUtlity.userInfo.data!.lastName!;
     _mobileController.text = AuthUtlity.userInfo.data!.mobile!;
+    _pimage=AuthUtlity.userInfo.data!.photo as File?;
   }
 
 

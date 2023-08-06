@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
-class Task_Summary extends StatelessWidget {
+class Task_Summary extends StatefulWidget {
   const Task_Summary({
     super.key,
     required this.number,
-    required this.title,
+    required this.title, required this.onUpdate,
   });
 
   final String number;
   final String title;
+  final VoidCallback onUpdate;
 
+  @override
+  State<Task_Summary> createState() => _Task_SummaryState();
+}
+
+class _Task_SummaryState extends State<Task_Summary> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -18,15 +24,15 @@ class Task_Summary extends StatelessWidget {
         padding: EdgeInsets.all(8.0),
         child: Column(
           children: [
-            number !='null'
+            widget.number !='null'
                 ?
             Text(
-              number ,
+              widget.number ,
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             )
 
                 :  const CircularProgressIndicator(),
-            Text('$title')
+            Text('${widget.title}')
           ],
         ),
       ),

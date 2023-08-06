@@ -26,8 +26,18 @@ class _cancleState extends State<cancle> {
     super.initState();
   }
 
+  bool isloading = false;
+
   Future<void> cancle_task() async {
+    isloading = true;
+    if (mounted) {
+      setState(() {});
+    }
     NetworkResponse response = await NetworkCaller().getrequest(Urls.cancled);
+    isloading = false;
+    if (mounted) {
+      setState(() {});
+    }
 
     if (response.isSuccess) {
       setState(() {
@@ -38,10 +48,6 @@ class _cancleState extends State<cancle> {
       log(response.body.toString());
     }
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -59,27 +65,33 @@ class _cancleState extends State<cancle> {
                 padding: EdgeInsets.all(8.0),
               ),
               Expanded(
-                child: ListView.separated(
-                  itemCount: cancle_task_data.length,
-                  itemBuilder: (context, index) {
-                    return  Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Task_list(
-                        title:cancle_task_data[index]['title'],
-                        description: cancle_task_data[index]['description'],
-                        date:cancle_task_data[index]['createdDate'],
-                        id:cancle_task_data[index]['_id'],
-                        colour: Colors.red,
-                        status_name: 'Cancelled',
+                child: isloading
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.separated(
+                        itemCount: cancle_task_data.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Task_list(
+                              title: cancle_task_data[index]['title'],
+                              description: cancle_task_data[index]
+                                  ['description'],
+                              date: cancle_task_data[index]['createdDate'],
+                              id: cancle_task_data[index]['_id'],
+                              colour: Colors.red,
+                              status_name: 'Cancelled',
+                              onUpdate: () {
+                                cancle_task();
+                              },
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 4,
+                          );
+                        },
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      height: 4,
-                    );
-                  },
-                ),
               )
             ],
           ),

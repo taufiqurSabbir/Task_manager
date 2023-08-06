@@ -27,8 +27,12 @@ class _progressState extends State<progress> {
     super.initState();
   }
 
+  bool isloading = false;
+
   Future<void> process_task() async {
+    isloading = true;
     NetworkResponse response = await NetworkCaller().getrequest(Urls.Progress);
+    isloading = false;
 
     if (response.isSuccess) {
       setState(() {
@@ -55,27 +59,32 @@ class _progressState extends State<progress> {
                 padding: EdgeInsets.all(8.0),
               ),
               Expanded(
-                child: ListView.separated(
-                  itemCount: progress_task.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Task_list(
-                        title: progress_task[index]['title'],
-                        description: progress_task[index]['description'],
-                        date: progress_task[index]['createdDate'],
-                        id: progress_task[index]['_id'],
-                        colour: Colors.purple,
-                        status_name: 'Progress',
+                child: isloading
+                    ? Center(child: CircularProgressIndicator())
+                    : ListView.separated(
+                        itemCount: progress_task.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Task_list(
+                              title: progress_task[index]['title'],
+                              description: progress_task[index]['description'],
+                              date: progress_task[index]['createdDate'],
+                              id: progress_task[index]['_id'],
+                              colour: Colors.purple,
+                              status_name: 'Progress',
+                              onUpdate: () {
+                                process_task();
+                              },
+                            ),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const Divider(
+                            height: 4,
+                          );
+                        },
                       ),
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, int index) {
-                    return const Divider(
-                      height: 4,
-                    );
-                  },
-                ),
               )
             ],
           ),

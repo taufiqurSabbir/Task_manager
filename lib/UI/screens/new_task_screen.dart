@@ -29,11 +29,10 @@ class _new_taskState extends State<new_task> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      task_count();
       task_status();
       Newtask();
-      task_status();
     });
+    task_status();
     print(tasksData.length);
 
     super.initState();
@@ -56,29 +55,18 @@ class _new_taskState extends State<new_task> {
   }
 
   void task_status() {
-    new_task_count();
-    progress_task_count();
-    cancled_task_count();
-    completed_task_count();
+    setState(() {
+      new_task_count();
+      progress_task_count();
+      cancled_task_count();
+      completed_task_count();
+    });
   }
 
   int? new_count;
   int? progress;
   int? cancle;
   int? completed;
-
-  List<dynamic>task_count_list=[];
-
-  Future<void>task_count()async {
-    NetworkResponse response =await NetworkCaller().getrequest(Urls.taskStatusCount);
-    if(response.isSuccess){
-
-      task_count_list = response.body!['data'];
-      log(task_count_list[1].toString());
-    }else{
-      log(response.body.toString());
-    }
-  }
 
   Future<int?> new_task_count() async {
     isloading = true;
@@ -149,22 +137,31 @@ class _new_taskState extends State<new_task> {
                         child: Task_Summary(
                       number: new_count.toString(),
                       title: 'New',
+                      onUpdate: () {
+                        task_status();
+                      },
                     )),
                     Expanded(
                         child: Task_Summary(
-                      number: progress.toString(),
-                      title: 'Progress',
-                    )),
+                            number: progress.toString(),
+                            title: 'Progress',
+                            onUpdate: () {
+                              task_status();
+                            })),
                     Expanded(
                         child: Task_Summary(
-                      number: cancle.toString(),
-                      title: 'Cancel',
-                    )),
+                            number: cancle.toString(),
+                            title: 'Cancel',
+                            onUpdate: () {
+                              task_status();
+                            })),
                     Expanded(
                         child: Task_Summary(
-                      number: completed.toString(),
-                      title: 'Completed',
-                    )),
+                            number: completed.toString(),
+                            title: 'Completed',
+                            onUpdate: () {
+                              task_status();
+                            })),
                   ],
                 ),
               ),
@@ -172,12 +169,11 @@ class _new_taskState extends State<new_task> {
                   ? const CircularProgressIndicator()
                   : Expanded(
                       child: RefreshIndicator(
-                        onRefresh: () async{
+                        onRefresh: () async {
                           setState(() {
                             task_status();
                             Newtask();
                           });
-
                         },
                         child: ListView.separated(
                           itemCount: tasksData.length,
@@ -191,6 +187,10 @@ class _new_taskState extends State<new_task> {
                                 id: tasksData[index]['_id'],
                                 colour: Colors.blueAccent,
                                 status_name: 'New',
+                                onUpdate: () {
+                                  Newtask();
+                                  task_status();
+                                },
                               ),
                             );
                           },
