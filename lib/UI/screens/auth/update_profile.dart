@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'dart:io' as io;
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/buttom_navigation.dart';
 import 'package:task_managment/UI/widget/User_profile_banner.dart';
@@ -20,6 +22,7 @@ class update_profile extends StatefulWidget {
 
 class _update_profileState extends State<update_profile> {
   File? _pimage;
+  late String bytes;
 
   Future imagepick() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -29,9 +32,19 @@ class _update_profileState extends State<update_profile> {
     final imgtemp = File(image.path);
     setState(() {
       _pimage = imgtemp;
-      log(imgtemp.toString());
+      bytes = convertIntoBase64(_pimage!);
+      // log(b64.toString());
     });
   }
+
+
+  String convertIntoBase64(File file) {
+    List<int> imageBytes = file.readAsBytesSync();
+    String base64File = base64Encode(imageBytes);
+    return base64File;
+  }
+
+
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
@@ -45,13 +58,15 @@ class _update_profileState extends State<update_profile> {
     _firstnameController.text = AuthUtlity.userInfo.data!.firstName!;
     _lastnameController.text = AuthUtlity.userInfo.data!.lastName!;
     _mobileController.text = AuthUtlity.userInfo.data!.mobile!;
-    _pimage = AuthUtlity.userInfo.data!.photo as File?;
+    bytes = AuthUtlity.userInfo.data!.photo!;
+
   }
 
   @override
   void initState() {
     // TODO: implement initState
     user_data();
+
     super.initState();
   }
 
@@ -62,10 +77,11 @@ class _update_profileState extends State<update_profile> {
       "firstName": _firstnameController.text.trim(),
       "lastName": _lastnameController.text.trim(),
       "mobile": _mobileController.text.trim(),
-      "photo": _pimage.toString(),
+      "photo": bytes,
     });
 
     if (response.isSuccess) {
+
       if (mounted) {
         Navigator.pushAndRemoveUntil(
             context,
@@ -112,9 +128,9 @@ class _update_profileState extends State<update_profile> {
                                 radius: 70,
                                 backgroundColor: Colors.blueAccent,
                                 child: ClipOval(
-                                  child: _pimage != null
-                                      ? Image.file(
-                                          _pimage!,
+                                  child: bytes != null
+                                      ?  Image.memory(
+                                    base64Decode(bytes),
                                           fit: BoxFit.cover,
                                           width: 200.0,
                                           height: 200.0,

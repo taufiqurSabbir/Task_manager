@@ -82,6 +82,7 @@ class _new_taskState extends State<new_task> {
     } else {
       return items.length;
     }
+
   }
 
   Future<int?> progress_task_count() async {

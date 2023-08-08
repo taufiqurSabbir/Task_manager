@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:task_managment/UI/screens/auth/update_profile.dart';
 import 'package:task_managment/data/model/login_model.dart';
@@ -36,10 +38,20 @@ class _User_profile_bannerState extends State<User_profile_banner> {
               AuthUtlity.userInfo.data?.photo ??
                   'https://media.istockphoto.com/id/1270067126/photo/smiling-indian-man-looking-at-camera.jpg?s=612x612&w=0&k=20&c=ovIQ5GPurLd3mOUj82jB9v-bjGZ8updgy1ACaHMeEC0=',
             ),
-            radius: 20,
+            radius: 27,
             onBackgroundImageError: (_, __) {
               Icon(Icons.no_accounts);
             },
+
+            child: ClipOval(
+          child:  AuthUtlity.userInfo.data?.photo != null
+          ?  Image.memory(
+              base64Decode(AuthUtlity.userInfo.data!.photo!),
+          fit: BoxFit.cover,
+        )
+              : Image.network(
+          'https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg'),
+    ),
           ),
           title: Text(
             '${AuthUtlity.userInfo.data?.firstName} ${AuthUtlity.userInfo.data?.lastName}',

@@ -25,7 +25,7 @@ class NetworkCaller {
         gotologin();
       } else {
 
-
+        gotologin();
         return NetworkResponse(false, response.statusCode, null);
       }
     } catch (e) {
@@ -54,6 +54,7 @@ class NetworkCaller {
       } else if (response.statusCode == 401) {
         gotologin();
       } else {
+        gotologin();
         return NetworkResponse(false, response.statusCode, null);
       }
     } catch (e) {
