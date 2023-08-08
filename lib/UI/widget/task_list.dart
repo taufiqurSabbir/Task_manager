@@ -128,9 +128,11 @@ class _Task_listState extends State<Task_list> {
                               builder: (context) {
                                 return AlertDialog(
                                   title: Text('Are you sure?'),
-                                  content: SingleChildScrollView(
+                                  content: const SingleChildScrollView(
                                     child: Column(
-                                      children: [],
+                                      children: [
+                                        Text('Do you want to delete the task?')
+                                      ],
                                     ),
                                   ),
                                   actions: [
