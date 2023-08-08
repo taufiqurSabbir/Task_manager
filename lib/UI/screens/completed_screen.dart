@@ -65,7 +65,7 @@ class _completedState extends State<completed> {
               Expanded(
                 child: isloading
                     ? Center(child: CircularProgressIndicator())
-                    : ListView.separated(
+                    : complete_task_data.length !=0 ? ListView.separated(
                         itemCount: complete_task_data.length,
                         itemBuilder: (context, index) {
                           return Padding(
@@ -89,7 +89,7 @@ class _completedState extends State<completed> {
                             height: 4,
                           );
                         },
-                      ),
+                      ) : Image.asset('asset/images/nod.png',width: 300,)
               )
             ],
           ),

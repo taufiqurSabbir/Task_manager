@@ -168,7 +168,7 @@ class _new_taskState extends State<new_task> {
               ),
               isloading
                   ? const CircularProgressIndicator()
-                  : Expanded(
+                  :  Expanded(
                       child: RefreshIndicator(
                         onRefresh: () async {
                           setState(() {
@@ -176,7 +176,7 @@ class _new_taskState extends State<new_task> {
                             Newtask();
                           });
                         },
-                        child: ListView.separated(
+                        child: tasksData.length !=0 ? ListView.separated(
                           itemCount: tasksData.length,
                           itemBuilder: (context, index) {
                             return Padding(
@@ -200,7 +200,7 @@ class _new_taskState extends State<new_task> {
                               height: 4,
                             );
                           },
-                        ),
+                        ) : Center(child: Image.asset('asset/images/nod.png',width: 280,)),
                       ),
                     )
             ],

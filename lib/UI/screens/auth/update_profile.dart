@@ -12,6 +12,7 @@ import 'package:task_managment/data/model/network_response.dart';
 import 'package:task_managment/data/services/network_caller.dart';
 import 'package:task_managment/data/utils/urls.dart';
 import '../../../data/model/auth_utility.dart';
+import '../../../data/model/login_model.dart';
 
 class update_profile extends StatefulWidget {
   const update_profile({Key? key}) : super(key: key);
@@ -21,6 +22,8 @@ class update_profile extends StatefulWidget {
 }
 
 class _update_profileState extends State<update_profile> {
+  UserData userData = AuthUtlity.userInfo.data!;
+
   File? _pimage;
   late String bytes;
 
@@ -37,14 +40,11 @@ class _update_profileState extends State<update_profile> {
     });
   }
 
-
   String convertIntoBase64(File file) {
     List<int> imageBytes = file.readAsBytesSync();
     String base64File = base64Encode(imageBytes);
     return base64File;
   }
-
-
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _firstnameController = TextEditingController();
@@ -59,7 +59,6 @@ class _update_profileState extends State<update_profile> {
     _lastnameController.text = AuthUtlity.userInfo.data!.lastName!;
     _mobileController.text = AuthUtlity.userInfo.data!.mobile!;
     bytes = AuthUtlity.userInfo.data!.photo!;
-
   }
 
   @override
@@ -81,7 +80,11 @@ class _update_profileState extends State<update_profile> {
     });
 
     if (response.isSuccess) {
-
+      userData.firstName = _firstnameController.text.trim();
+      userData.lastName = _lastnameController.text.trim();
+      userData.mobile = _mobileController.text.trim();
+      userData.photo = bytes;
+AuthUtlity.updateUserInfo(userData);
       if (mounted) {
         Navigator.pushAndRemoveUntil(
             context,
@@ -129,8 +132,8 @@ class _update_profileState extends State<update_profile> {
                                 backgroundColor: Colors.blueAccent,
                                 child: ClipOval(
                                   child: bytes != null
-                                      ?  Image.memory(
-                                    base64Decode(bytes),
+                                      ? Image.memory(
+                                          base64Decode(bytes),
                                           fit: BoxFit.cover,
                                           width: 200.0,
                                           height: 200.0,

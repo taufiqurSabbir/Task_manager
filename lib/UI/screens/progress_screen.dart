@@ -61,7 +61,7 @@ class _progressState extends State<progress> {
               Expanded(
                 child: isloading
                     ? Center(child: CircularProgressIndicator())
-                    : ListView.separated(
+                    : progress_task.length !=0 ? ListView.separated(
                         itemCount: progress_task.length,
                         itemBuilder: (context, index) {
                           return Padding(
@@ -84,7 +84,7 @@ class _progressState extends State<progress> {
                             height: 4,
                           );
                         },
-                      ),
+                      ) : Image.asset('asset/images/nod.png',width: 300,)
               )
             ],
           ),

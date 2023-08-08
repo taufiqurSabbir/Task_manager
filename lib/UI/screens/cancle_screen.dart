@@ -67,7 +67,7 @@ class _cancleState extends State<cancle> {
               Expanded(
                 child: isloading
                     ? const Center(child: CircularProgressIndicator())
-                    : ListView.separated(
+                    : cancle_task_data.length !=0 ? ListView.separated(
                         itemCount: cancle_task_data.length,
                         itemBuilder: (context, index) {
                           return Padding(
@@ -91,7 +91,7 @@ class _cancleState extends State<cancle> {
                             height: 4,
                           );
                         },
-                      ),
+                      ) : Image.asset('asset/images/nod.png',width: 280,)
               )
             ],
           ),
