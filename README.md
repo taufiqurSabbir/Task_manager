@@ -10,7 +10,7 @@
 
 # on wrong login
 
-![img_12.png](img_12.png)
+![img_23.png](img_23.png)
 
 # sign up screen
 
