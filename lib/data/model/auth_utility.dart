@@ -1,43 +1,36 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_managment/UI/screens/auth/loginScreen.dart';
 import 'package:task_managment/data/model/login_model.dart';
 
-class AuthUtlity{
+class AuthUtlity {
   AuthUtlity._();
 
   static login_model userInfo = login_model();
 
-  static Future<void>saveUserInfo(login_model model) async{
-   SharedPreferences _sharep = await SharedPreferences.getInstance();
-   await _sharep.setString('user-data', jsonEncode(model.toJson()));
-   userInfo =model;
-  }
-
-
- static  Future<login_model>getUserInfo() async{
+  static Future<void> saveUserInfo(login_model model) async {
     SharedPreferences _sharep = await SharedPreferences.getInstance();
-     String  value =  await _sharep.getString('user-data')!;
-      return  login_model.fromJson(jsonDecode(value));
+    await _sharep.setString('user-data', jsonEncode(model.toJson()));
+    userInfo = model;
   }
 
-  static Future<void>clearInfo() async {
-        SharedPreferences _sharep = await SharedPreferences.getInstance();
-        _sharep.clear();
+  static Future<login_model> getUserInfo() async {
+    SharedPreferences _sharep = await SharedPreferences.getInstance();
+    String value = await _sharep.getString('user-data')!;
+    return login_model.fromJson(jsonDecode(value));
+  }
+
+  static Future<void> clearInfo() async {
+    SharedPreferences _sharep = await SharedPreferences.getInstance();
+    _sharep.clear();
   }
 
   static Future<bool> checkuserlogin() async {
+    SharedPreferences _sharep = await SharedPreferences.getInstance();
+    bool islogin = _sharep.containsKey('user-data');
 
-  SharedPreferences _sharep = await SharedPreferences.getInstance();
-  bool islogin =  _sharep.containsKey('user-data');
-
-  if(islogin){
-    userInfo = await getUserInfo();
+    if (islogin) {
+      userInfo = await getUserInfo();
+    }
+    return islogin;
   }
-  return islogin;
-
-}
 }

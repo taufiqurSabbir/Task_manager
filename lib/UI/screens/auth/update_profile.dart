@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:task_managment/UI/screens/buttom_navigation.dart';
 import 'package:task_managment/UI/widget/User_profile_banner.dart';
 import 'package:task_managment/UI/widget/screen_background.dart';
 import 'package:task_managment/data/model/network_response.dart';
@@ -22,12 +23,12 @@ class _update_profileState extends State<update_profile> {
 
   Future imagepick() async {
     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(image==null){
+    if (image == null) {
       return;
     }
     final imgtemp = File(image.path);
     setState(() {
-      _pimage=imgtemp;
+      _pimage = imgtemp;
       log(imgtemp.toString());
     });
   }
@@ -44,11 +45,8 @@ class _update_profileState extends State<update_profile> {
     _firstnameController.text = AuthUtlity.userInfo.data!.firstName!;
     _lastnameController.text = AuthUtlity.userInfo.data!.lastName!;
     _mobileController.text = AuthUtlity.userInfo.data!.mobile!;
-    _pimage=AuthUtlity.userInfo.data!.photo as File?;
+    _pimage = AuthUtlity.userInfo.data!.photo as File?;
   }
-
-
-
 
   @override
   void initState() {
@@ -57,23 +55,30 @@ class _update_profileState extends State<update_profile> {
     super.initState();
   }
 
-  Future<void>updateprofile()async {
-    NetworkResponse response = await NetworkCaller().postrequest(Urls.profile_update, <String,dynamic>{
-      "email":_emailController.text.trim(),
-      "firstName":_firstnameController.text.trim(),
-      "lastName":_lastnameController.text.trim(),
-      "mobile":_mobileController.text.trim(),
-      "photo":_pimage.toString(),
+  Future<void> updateprofile() async {
+    NetworkResponse response = await NetworkCaller()
+        .postrequest(Urls.profile_update, <String, dynamic>{
+      "email": _emailController.text.trim(),
+      "firstName": _firstnameController.text.trim(),
+      "lastName": _lastnameController.text.trim(),
+      "mobile": _mobileController.text.trim(),
+      "photo": _pimage.toString(),
     });
 
-    if(response.isSuccess){
-      log(_pimage.toString());
-      log(response.statusCode.toString());
-    }else{
+    if (response.isSuccess) {
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => Buttom_nav()),
+            (route) => false);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Profile update succesfull'),
+        ));
+      }
+    } else {
       log(response.statusCode.toString());
     }
   }
-
 
   Widget build(BuildContext context) {
     bool password = true;
@@ -99,7 +104,6 @@ class _update_profileState extends State<update_profile> {
                       ),
                       Stack(
                         children: [
-                        
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 18.0),
@@ -108,12 +112,15 @@ class _update_profileState extends State<update_profile> {
                                 radius: 70,
                                 backgroundColor: Colors.blueAccent,
                                 child: ClipOval(
-                                  child: _pimage!=null ? Image.file(_pimage!,
-                                    fit: BoxFit.cover,
-                                    width: 200.0,
-                                    height: 200.0,
-                                  ): Image.network('https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg'),
-
+                                  child: _pimage != null
+                                      ? Image.file(
+                                          _pimage!,
+                                          fit: BoxFit.cover,
+                                          width: 200.0,
+                                          height: 200.0,
+                                        )
+                                      : Image.network(
+                                          'https://t4.ftcdn.net/jpg/01/86/29/31/360_F_186293166_P4yk3uXQBDapbDFlR17ivpM6B1ux0fHG.jpg'),
                                 ),
                               ),
                             ),
